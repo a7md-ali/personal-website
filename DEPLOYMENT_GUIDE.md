@@ -145,3 +145,4 @@ Remember to complete the EmailJS setup from `EMAIL_SETUP.md` to receive messages
 
 Your website is professional, modern, and ready to impress! 🚀
 
+

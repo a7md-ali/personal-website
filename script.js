@@ -432,7 +432,6 @@ document.addEventListener('DOMContentLoaded', () => {
     new SkillBars();
     new DarkModeToggle();
     new ParticleSystem();
-    new CursorEffects();
     
     // Add loading animation
     document.body.style.opacity = '0';
@@ -556,88 +555,67 @@ class ParticleSystem {
     }
 }
 
-// Enhanced Cursor Effects
-class CursorEffects {
-    constructor() {
-        this.cursor = null;
-        this.follower = null;
-        this.init();
-    }
+// Cursor Effects removed for better user experience
+
+// Interactive effects removed for cleaner user experience
+
+// Copy to clipboard functionality
+function copyToClipboard() {
+    const urlInput = document.getElementById('websiteUrl');
+    const copyButton = document.querySelector('.sharing-link.secondary');
+    const originalText = copyButton.innerHTML;
     
-    init() {
-        this.createCursor();
-        this.addMouseMoveListener();
-        this.addMouseEnterListeners();
-    }
+    // Select and copy the text
+    urlInput.select();
+    urlInput.setSelectionRange(0, 99999); // For mobile devices
     
-    createCursor() {
-        this.cursor = document.createElement('div');
-        this.cursor.className = 'cursor';
-        this.cursor.style.cssText = `
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease;
-            opacity: 0.8;
-        `;
+    try {
+        document.execCommand('copy');
         
-        this.follower = document.createElement('div');
-        this.follower.className = 'cursor-follower';
-        this.follower.style.cssText = `
-            position: fixed;
-            width: 30px;
-            height: 30px;
-            border: 2px solid var(--accent-color);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transition: all 0.3s ease;
-            opacity: 0.3;
-        `;
+        // Show success feedback
+        copyButton.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+        copyButton.style.background = 'var(--success-color)';
+        copyButton.style.color = 'white';
+        copyButton.style.borderColor = 'var(--success-color)';
         
-        document.body.appendChild(this.cursor);
-        document.body.appendChild(this.follower);
-    }
-    
-    addMouseMoveListener() {
-        document.addEventListener('mousemove', (e) => {
-            this.cursor.style.left = e.clientX - 4 + 'px';
-            this.cursor.style.top = e.clientY - 4 + 'px';
+        // Reset after 2 seconds
+        setTimeout(() => {
+            copyButton.innerHTML = originalText;
+            copyButton.style.background = '';
+            copyButton.style.color = '';
+            copyButton.style.borderColor = '';
+        }, 2000);
+        
+    } catch (err) {
+        // Fallback for modern browsers
+        navigator.clipboard.writeText(urlInput.value).then(() => {
+            copyButton.innerHTML = '<i class="fas fa-check"></i><span>Copied!</span>';
+            copyButton.style.background = 'var(--success-color)';
+            copyButton.style.color = 'white';
+            copyButton.style.borderColor = 'var(--success-color)';
             
             setTimeout(() => {
-                this.follower.style.left = e.clientX - 15 + 'px';
-                this.follower.style.top = e.clientY - 15 + 'px';
-            }, 100);
-        });
-    }
-    
-    addMouseEnterListeners() {
-        const interactiveElements = document.querySelectorAll('a, button, .project-card, .skill-item');
-        
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                this.cursor.style.transform = 'scale(2)';
-                this.follower.style.transform = 'scale(1.5)';
-                this.follower.style.opacity = '0.6';
-            });
+                copyButton.innerHTML = originalText;
+                copyButton.style.background = '';
+                copyButton.style.color = '';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        }).catch(() => {
+            // Show error feedback
+            copyButton.innerHTML = '<i class="fas fa-times"></i><span>Failed</span>';
+            copyButton.style.background = 'var(--error-color)';
+            copyButton.style.color = 'white';
+            copyButton.style.borderColor = 'var(--error-color)';
             
-            el.addEventListener('mouseleave', () => {
-                this.cursor.style.transform = 'scale(1)';
-                this.follower.style.transform = 'scale(1)';
-                this.follower.style.opacity = '0.3';
-            });
+            setTimeout(() => {
+                copyButton.innerHTML = originalText;
+                copyButton.style.background = '';
+                copyButton.style.color = '';
+                copyButton.style.borderColor = '';
+            }, 2000);
         });
     }
 }
-
-// Add some fun interactive effects
-document.addEventListener('mousemove', (e) => {
-    // Keep the existing cursor code for backward compatibility
-});
 
 // Add click ripple effect
 document.addEventListener('click', (e) => {

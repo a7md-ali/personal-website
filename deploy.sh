@@ -64,3 +64,4 @@ echo "🎉 Your website is ready to go live!"
 echo "📁 Deployment package: personal-website.zip"
 echo "📖 Full guide: DEPLOYMENT_GUIDE.md"
 
+
